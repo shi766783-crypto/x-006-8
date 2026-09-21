@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import StatCard from '../components/dashboard/StatCard.vue'
+import WeeklyReport from '../components/dashboard/WeeklyReport.vue'
 import DoseItem from '../components/medication/DoseItem.vue'
 import EmptyState from '../components/ui/EmptyState.vue'
 import { useFamilyStore } from '../stores/useFamilyStore'
@@ -13,6 +14,7 @@ const stats = computed(() => store.stats)
 const expired = computed(() => store.expiredMedicines)
 const expiring = computed(() => store.expiringMedicines)
 const todayDoses = computed(() => store.todayDoses)
+const weeklyReport = computed(() => store.weeklyReport)
 
 const scoreColor = computed(() => {
   const s = score.value.total
@@ -62,6 +64,9 @@ const scoreColor = computed(() => {
       <StatCard label="过期药品" :value="stats.expiredCount" icon="⚠️" color="#e74c3c" />
       <StatCard label="最近就医" :value="stats.lastRecordDate" icon="🏥" color="#16a085" />
     </section>
+
+    <!-- Weekly report -->
+    <WeeklyReport :report="weeklyReport" />
 
     <!-- Expiry warnings -->
     <section v-if="expired.length || expiring.length" class="card">
