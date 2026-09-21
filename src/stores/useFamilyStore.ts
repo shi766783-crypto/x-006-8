@@ -16,6 +16,7 @@ import { evaluateAchievements } from '../utils/achievements'
 import { daysUntil, formatDate, lastNDates, timeToMinutes, todayStr } from '../utils/date'
 import { computeHealthScore, type HealthScoreResult } from '../utils/healthScore'
 import { uid } from '../utils/id'
+import { computeWeeklyReport, type WeeklyReport } from '../utils/weeklyReport'
 
 interface FamilyState {
   members: FamilyMember[]
@@ -243,6 +244,15 @@ function createStore() {
     }),
   )
 
+  const weeklyReport = computed<WeeklyReport>(() =>
+    computeWeeklyReport({
+      members: state.members,
+      medicines: state.medicines,
+      logs: state.logs,
+      records: state.records,
+    }),
+  )
+
   const lastRecordDate = computed(() => {
     if (!state.records.length) return '—'
     const max = state.records.reduce((a, r) => (r.date > a ? r.date : a), '')
@@ -285,6 +295,7 @@ function createStore() {
     compliance7,
     achievements,
     healthScore,
+    weeklyReport,
     lastRecordDate,
     stats,
   })
